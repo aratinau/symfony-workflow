@@ -1,2 +1,29 @@
 framework:
-    workflows: null
+    workflows:
+        public_status:
+            type: 'state_machine'
+            marking_store:
+                type: 'method'
+                property: 'publicStatus'
+            supports:
+                - App\Entity\BaseItem
+            initial_marking: SENT
+            places:
+                - SENT
+                - READ
+                - ARCHIVED
+                - CANCELLED
+                - NOT_READ
+            transitions:
+                to_read:
+                    from: SENT
+                    to: READ
+                archive:
+                    from: READ
+                    to: ARCHIVED
+                cancel:
+                    from: [SENT, READ]
+                    to: CANCELLED
+                mark_not_read:
+                    from: READ
+                    to: NOT_READ
