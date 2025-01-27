@@ -33,3 +33,13 @@ Utilisation des Écouteurs (Event Listeners)
 
 Pour tirer parti de ces événements, vous pouvez créer des écouteurs d'événements (EventListener) ou des abonnés d'événements (EventSubscriber). Ces composants vous permettent d'exécuter du code à des moments précis du cycle de vie du workflow, tels que l'envoi de notifications, la mise à jour d'autres entités, ou la journalisation des changements d'état.
 
+## Design patterns
+
+### - 1. State Pattern 
+### - 2. Strategy Pattern  
+### - 3. Observer Pattern 
+### - 4. Chain of Responsibility 
+
+TODO : https://symfonycasts.com/screencast/design-patterns-2
+
+TODD : https://chatgpt.com/c/671188fe-bc8c-8008-bd15-77e751c59dba

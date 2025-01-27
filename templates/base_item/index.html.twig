@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}BaseItem index{% endblock %}
+
+{% block body %}
+    <h1>BaseItem index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>PublicStatus</th>
+                <th>Subject</th>
+                <th>Description</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for base_item in base_items %}
+            <tr>
+                <td>{{ base_item.id }}</td>
+                <td>
+                    {% for key, status in base_item.publicStatus %}
+                        {{ key }}
+                    {% endfor %}
+                </td>
+                <td>{{ base_item.subject }}</td>
+                <td>{{ base_item.description }}</td>
+                <td>
+                    <a href="{{ path('app_base_item_show', {'id': base_item.id}) }}">show</a>
+                    <a href="{{ path('app_base_item_edit', {'id': base_item.id}) }}">edit</a>
+                    <a href="{{ path('base_item_change_status', {'id': base_item.id}) }}">workflow</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_base_item_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Change Public Status{% endblock %}
+
+{% block body %}
+    <h1>Change Public Status for "{{ baseItem.subject }}"</h1>
+
+
+    {{ form_start(form) }}
+{#    {{ form_row(form.publicStatus) }}#}
+
+    <ul>
+        {% for transition in enabledTransitions %}
+            <li>
+                <button type="submit" name="transition" value="{{ transition.name }}">
+                    {{ transition.name|capitalize }}
+                </button>
+            </li>
+        {% endfor %}
+    </ul>
+    {{ form_row(form.save) }}
+    {{ form_end(form) }}
+
+{% endblock %}

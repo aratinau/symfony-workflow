@@ -1,7 +1,9 @@
 framework:
     workflows:
         public_status:
-            type: 'state_machine'
+            type: 'workflow' # or 'state_machine'
+            audit_trail:
+                enabled: true
             marking_store:
                 type: 'method'
                 property: 'publicStatus'
