@@ -31,7 +31,7 @@ class BaseItem
     private ?string $description = null;
 
     #[ORM\Column(nullable: true)]
-    private ?array $publicStatus = null;
+    private $publicStatus = null;
 
     public function getId(): ?int
     {
@@ -40,9 +40,9 @@ class BaseItem
 
     public function __construct()
     {
-        $this->publicStatus =
-            [self::STATUSES['SENT'] => 1]
-        ;
+//        $this->publicStatus =
+//            [self::STATUSES['SENT'] => 1]
+//        ;
     }
 
     public function getSubject(): ?string
@@ -69,12 +69,12 @@ class BaseItem
         return $this;
     }
 
-    public function getPublicStatus(): ?array
+    public function getPublicStatus()
     {
         return $this->publicStatus;
     }
 
-    public function setPublicStatus(?array $publicStatus): static
+    public function setPublicStatus($publicStatus): static
     {
         $this->publicStatus = $publicStatus;
 

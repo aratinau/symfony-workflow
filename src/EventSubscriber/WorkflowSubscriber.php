@@ -26,7 +26,7 @@ class WorkflowSubscriber implements EventSubscriberInterface
 
     public function announce(Event $event)
     {
-        
+
     }
 
     public function onTransition(Event $event)

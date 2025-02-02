@@ -22,3 +22,16 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    dynamic_workflow.base_item:
+        public: true
+        class: Symfony\Component\Workflow\WorkflowInterface
+        factory: ['@App\Workflow\DynamicWorkflowServiceFactory', 'create']
+        arguments:
+            $target: 'App\Entity\BaseItem'
+        tags:
+            - { name: workflow }
+            - { name: workflow.workflow }
+            - { name: workflow.dynamic_loader, target: 'App\Entity\BaseItem' }
+
+    Symfony\Component\Workflow\WorkflowInterface $dynamicWorkflowBaseItem: '@dynamic_workflow.base_item'

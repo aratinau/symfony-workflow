@@ -17,7 +17,8 @@ class BaseItemWorkflowController extends AbstractController
     public function changeStatus(
         int $id,
         BaseItemRepository $baseItemRepository,
-        WorkflowInterface $publicStatusWorkflow, // Corrigez ici
+        //WorkflowInterface $publicStatusWorkflow, // Corrigez ici
+        WorkflowInterface $dynamicWorkflowBaseItem,
         Request $request,
         EntityManagerInterface $entityManager
     ): Response {
@@ -30,15 +31,15 @@ class BaseItemWorkflowController extends AbstractController
         $form = $this->createForm(ChangePublicStatusType::class, $baseItem);
         $form->handleRequest($request);
 
-        $enabledTransitions = $publicStatusWorkflow->getEnabledTransitions($baseItem);
+        $enabledTransitions = $dynamicWorkflowBaseItem->getEnabledTransitions($baseItem);
 
 
         if ($form->isSubmitted() && $form->isValid()) {
             $transition = $request->request->get('transition');
 
             // Appliquer la transition choisie
-            if ($publicStatusWorkflow->can($baseItem, $transition)) {
-                $publicStatusWorkflow->apply($baseItem, $transition);
+            if ($dynamicWorkflowBaseItem->can($baseItem, $transition)) {
+                $dynamicWorkflowBaseItem->apply($baseItem, $transition);
 
                 $entityManager->flush();
 

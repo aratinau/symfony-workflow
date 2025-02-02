@@ -9,12 +9,12 @@ use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
 use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Component\Workflow\WorkflowInterface;
 
-#[AsDecorator('api_platform.doctrine.orm.state.persist_processor')]
+##[AsDecorator('api_platform.doctrine.orm.state.persist_processor')]
 class BaseItemProcessor // implements ProcessorInterface
 {
     public function __construct(
         private ProcessorInterface $innerProcessor,
-        #[Target('public_status')]
+        ##[Target('public_status')]
         private WorkflowInterface $workflow,
         private LoggerInterface $logger
     ) {
