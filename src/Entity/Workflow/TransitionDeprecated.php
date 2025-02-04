@@ -7,18 +7,18 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
 
 #[Entity(repositoryClass: TransitionRepository::class)]
-class Transition
+class TransitionDeprecated
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: Place::class)]
-    private ?Place $fromPlace = null;
+    #[ORM\ManyToOne(targetEntity: PlaceDeprecated::class)]
+    private ?PlaceDeprecated $fromPlace = null;
 
-    #[ORM\ManyToOne(targetEntity: Place::class)]
-    private ?Place $toPlace = null;
+    #[ORM\ManyToOne(targetEntity: PlaceDeprecated::class)]
+    private ?PlaceDeprecated $toPlace = null;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -31,23 +31,23 @@ class Transition
         return $this->id;
     }
 
-    public function getFromPlace(): ?Place
+    public function getFromPlace(): ?PlaceDeprecated
     {
         return $this->fromPlace;
     }
 
-    public function setFromPlace(?Place $fromPlace): self
+    public function setFromPlace(?PlaceDeprecated $fromPlace): self
     {
         $this->fromPlace = $fromPlace;
         return $this;
     }
 
-    public function getToPlace(): ?Place
+    public function getToPlace(): ?PlaceDeprecated
     {
         return $this->toPlace;
     }
 
-    public function setToPlace(?Place $toPlace): self
+    public function setToPlace(?PlaceDeprecated $toPlace): self
     {
         $this->toPlace = $toPlace;
         return $this;

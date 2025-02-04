@@ -2,8 +2,8 @@
 
 namespace App\Workflow;
 
-use App\Entity\Workflow\Place;
-use App\Entity\Workflow\Transition;
+use App\Entity\Workflow\PlaceDeprecated;
+use App\Entity\Workflow\TransitionDeprecated;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Workflow\DefinitionBuilder;
 use Symfony\Component\Workflow\MarkingStore\MethodMarkingStore;
@@ -27,11 +27,11 @@ class DynamicWorkflowLoader
     private function createWorkflowFromEntities(string $target): Workflow
     {
         $places = $this->entityManager
-            ->getRepository(Place::class)
+            ->getRepository(PlaceDeprecated::class)
             ->findBy(['target' => $target]);
 
         $transitions = $this->entityManager
-            ->getRepository(Transition::class)
+            ->getRepository(TransitionDeprecated::class)
             ->findBy(['target' => $target]);
 
         $definitionBuilder = new DefinitionBuilder();

@@ -1,27 +1,27 @@
 <?php
 
-namespace App\Repository\Workflow;
+namespace App\Repository;
 
-use App\Entity\Workflow\TransitionDeprecated;
+use App\Entity\WorkflowPlace;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<TransitionDeprecated>
+ * @extends ServiceEntityRepository<WorkflowPlace>
  *
- * @method TransitionDeprecated|null find($id, $lockMode = null, $lockVersion = null)
- * @method TransitionDeprecated|null findOneBy(array $criteria, array $orderBy = null)
- * @method TransitionDeprecated[]    findAll()
- * @method TransitionDeprecated[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method WorkflowPlace|null find($id, $lockMode = null, $lockVersion = null)
+ * @method WorkflowPlace|null findOneBy(array $criteria, array $orderBy = null)
+ * @method WorkflowPlace[]    findAll()
+ * @method WorkflowPlace[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TransitionRepository extends ServiceEntityRepository
+class WorkflowPlaceRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, TransitionDeprecated::class);
+        parent::__construct($registry, WorkflowPlace::class);
     }
 
-    public function add(TransitionDeprecated $entity, bool $flush = false): void
+    public function add(WorkflowPlace $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class TransitionRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(TransitionDeprecated $entity, bool $flush = false): void
+    public function remove(WorkflowPlace $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -40,7 +40,7 @@ class TransitionRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return Transition[] Returns an array of Transition objects
+//     * @return WorkflowState[] Returns an array of WorkflowState objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -54,7 +54,7 @@ class TransitionRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Transition
+//    public function findOneBySomeField($value): ?WorkflowState
 //    {
 //        return $this->createQueryBuilder('t')
 //            ->andWhere('t.exampleField = :val')

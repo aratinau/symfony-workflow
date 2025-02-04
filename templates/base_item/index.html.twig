@@ -11,7 +11,7 @@
                 <th>Id</th>
                 <th>PublicStatus</th>
                 <th>Subject</th>
-                <th>Description</th>
+{#                <th>Description</th>#}
                 <th>actions</th>
             </tr>
         </thead>
@@ -20,16 +20,14 @@
             <tr>
                 <td>{{ base_item.id }}</td>
                 <td>
-                    {% for key, status in base_item.publicStatus %}
-                        {{ key }}
-                    {% endfor %}
+                    {{ base_item.publicStatus }}
                 </td>
                 <td>{{ base_item.subject }}</td>
-                <td>{{ base_item.description }}</td>
+{#                <td>{{ base_item.description }}</td>#}
                 <td>
-                    <a href="{{ path('app_base_item_show', {'id': base_item.id}) }}">show</a>
+{#                    <a href="{{ path('app_base_item_show', {'id': base_item.id}) }}">show</a>#}
                     <a href="{{ path('app_base_item_edit', {'id': base_item.id}) }}">edit</a>
-                    <a href="{{ path('base_item_change_status', {'id': base_item.id}) }}">workflow</a>
+                    <a href="{{ path('update_status_workflow', {'baseItem': base_item.id}) }}">workflow</a>
                 </td>
             </tr>
         {% else %}

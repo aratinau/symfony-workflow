@@ -1,0 +1,12 @@
+{% for message in app.flashes('success') %}
+  <div class="alert alert-success">{{ message }}</div>
+{% endfor %}
+
+{% for t in transitions %}
+  <p>Transition possible: {{ t.fromState.name }} → {{ t.toState.name }}</p>
+{% endfor %}
+
+{{ form_start(form) }}
+  {{ form_row(form.newStatus) }}
+  {{ form_row(form.save) }}
+{{ form_end(form) }}

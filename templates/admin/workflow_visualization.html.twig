@@ -1,0 +1,28 @@
+{# templates/admin/workflow_visualization.html.twig #}
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block head_javascript %}
+  {{ parent() }}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
+{% endblock %}
+
+{% block content_title %}Visualisation du Workflow{% endblock %}
+
+{% block main %}
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Workflow pour : {{ workflow.id }}</h5>
+      <div class="mermaid">
+        {{ mermaid_definition|raw }}
+      </div>
+    </div>
+  </div>
+
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'default',
+      securityLevel: 'loose'
+    });
+  </script>
+{% endblock %}

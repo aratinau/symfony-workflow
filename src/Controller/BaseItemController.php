@@ -42,13 +42,13 @@ class BaseItemController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_base_item_show', methods: ['GET'])]
-    public function show(BaseItem $baseItem): Response
-    {
-        return $this->render('base_item/show.html.twig', [
-            'base_item' => $baseItem,
-        ]);
-    }
+//    #[Route('/{id}', name: 'app_base_item_show', methods: ['GET'])]
+//    public function show(BaseItem $baseItem): Response
+//    {
+//        return $this->render('base_item/show.html.twig', [
+//            'base_item' => $baseItem,
+//        ]);
+//    }
 
     #[Route('/{id}/edit', name: 'app_base_item_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, BaseItem $baseItem, EntityManagerInterface $entityManager): Response

@@ -2,26 +2,26 @@
 
 namespace App\Repository\Workflow;
 
-use App\Entity\Workflow\Place;
+use App\Entity\Workflow\PlaceDeprecated;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Place>
+ * @extends ServiceEntityRepository<PlaceDeprecated>
  *
- * @method Place|null find($id, $lockMode = null, $lockVersion = null)
- * @method Place|null findOneBy(array $criteria, array $orderBy = null)
- * @method Place[]    findAll()
- * @method Place[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method PlaceDeprecated|null find($id, $lockMode = null, $lockVersion = null)
+ * @method PlaceDeprecated|null findOneBy(array $criteria, array $orderBy = null)
+ * @method PlaceDeprecated[]    findAll()
+ * @method PlaceDeprecated[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class PlaceRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Place::class);
+        parent::__construct($registry, PlaceDeprecated::class);
     }
 
-    public function add(Place $entity, bool $flush = false): void
+    public function add(PlaceDeprecated $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class PlaceRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Place $entity, bool $flush = false): void
+    public function remove(PlaceDeprecated $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 

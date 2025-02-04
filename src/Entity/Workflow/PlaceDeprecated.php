@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
 
 #[Entity(repositoryClass: PlaceRepository::class)]
-class Place
+class PlaceDeprecated
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
