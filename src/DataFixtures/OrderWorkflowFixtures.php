@@ -12,6 +12,6 @@ class OrderWorkflowFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        OrderWorkflowFactory::createOne(['name' => 'Workflow Principal']);
+        // OrderWorkflowFactory::createOne(['name' => 'Workflow Principal']);
     }
 }

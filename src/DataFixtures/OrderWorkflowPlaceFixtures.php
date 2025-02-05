@@ -27,10 +27,15 @@ class OrderWorkflowPlaceFixtures extends Fixture
         // Créer un tableau pour stocker les instances d'états
         $stateInstances = [];
 
-        // Instancier chaque état
+        // Créer un OrderWorkflow
+        $orderWorkflow = new OrderWorkflow();
+        $orderWorkflow->setName('Commande Workflow');
+
+        // Instancier chaque état et l'associer au workflow
         foreach ($states as $name => $allowedTransitions) {
             $state = new OrderWorkflowPlace();
             $state->setName($name);
+            $state->setWorkflow($orderWorkflow); // Associer l'état au workflow
 
             // Ajouter l'état au tableau temporaire
             $stateInstances[$name] = $state;
@@ -52,6 +57,9 @@ class OrderWorkflowPlaceFixtures extends Fixture
             // Mettre à jour l'état avec ses transitions autorisées
             $manager->persist($state);
         }
+
+        // Sauvegarder le workflow dans la base de données
+        $manager->persist($orderWorkflow);
 
         // Enregistrer toutes les modifications dans la base de données
         $manager->flush();

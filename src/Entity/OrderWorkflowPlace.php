@@ -34,6 +34,10 @@ class OrderWorkflowPlace
     #[ORM\Column(type: 'json', nullable: true)]
     private ?array $actions = [];
 
+    #[ORM\ManyToOne(inversedBy: 'orderWorkflowPlaces')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?OrderWorkflow $workflow = null;
+
     public function __construct()
     {
         $this->allowedTransitions = new ArrayCollection();
@@ -105,9 +109,15 @@ class OrderWorkflowPlace
         return $this->actions;
     }
 
-    public function setActions(?array $actions): static
+    public function getWorkflow(): ?OrderWorkflow
     {
-        $this->actions = $actions;
+        return $this->workflow;
+    }
+
+    public function setWorkflow(?OrderWorkflow $workflow): static
+    {
+        $this->workflow = $workflow;
+
         return $this;
     }
 }

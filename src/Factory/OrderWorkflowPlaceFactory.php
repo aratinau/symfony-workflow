@@ -33,6 +33,7 @@ final class OrderWorkflowPlaceFactory extends PersistentProxyObjectFactory
     {
         return [
             'name' => self::faker()->text(255),
+            'workflow' => OrderWorkflowFactory::new(),
         ];
     }
 

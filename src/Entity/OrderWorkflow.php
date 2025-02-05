@@ -18,8 +18,15 @@ class OrderWorkflow
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    /**
+     * @var Collection<int, OrderWorkflowPlace>
+     */
+    #[ORM\OneToMany(targetEntity: OrderWorkflowPlace::class, mappedBy: 'workflow')]
+    private Collection $orderWorkflowPlaces;
+
     public function __construct()
     {
+        $this->orderWorkflowPlaces = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -35,6 +42,36 @@ class OrderWorkflow
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OrderWorkflowPlace>
+     */
+    public function getOrderWorkflowPlaces(): Collection
+    {
+        return $this->orderWorkflowPlaces;
+    }
+
+    public function addOrderWorkflowPlace(OrderWorkflowPlace $orderWorkflowPlace): static
+    {
+        if (!$this->orderWorkflowPlaces->contains($orderWorkflowPlace)) {
+            $this->orderWorkflowPlaces->add($orderWorkflowPlace);
+            $orderWorkflowPlace->setWorkflow($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderWorkflowPlace(OrderWorkflowPlace $orderWorkflowPlace): static
+    {
+        if ($this->orderWorkflowPlaces->removeElement($orderWorkflowPlace)) {
+            // set the owning side to null (unless already changed)
+            if ($orderWorkflowPlace->getWorkflow() === $this) {
+                $orderWorkflowPlace->setWorkflow(null);
+            }
+        }
 
         return $this;
     }
