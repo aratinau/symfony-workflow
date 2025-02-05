@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Workflow;
+namespace App\Workflow\Observer;
 
 class EmailNotificationObserver implements Observer {
     public function update() {

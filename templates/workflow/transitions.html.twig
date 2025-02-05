@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Transitions du Workflow{% endblock %}
+
+{% block body %}
+  <h1>État actuel : {{ baseItem.publicStatus }}</h1>
+
+  <div class="mermaid">
+    {{ mermaidCode }}
+  </div>
+
+  <h2>Transitions possibles :</h2>
+  {% if transitions is empty %}
+    <p>Aucune transition possible.</p>
+  {% else %}
+    <ul>
+      {% for transition in transitions %}
+        <li>Vers : <a href="{{ path('base_item_new_workflow2', { param: transition, baseItem: baseItem.id }) }}">{{ transition }}</a></li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endblock %}

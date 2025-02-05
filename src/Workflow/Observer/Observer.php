@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Workflow;
+namespace App\Workflow\Observer;
 
 interface Observer {
     public function update();

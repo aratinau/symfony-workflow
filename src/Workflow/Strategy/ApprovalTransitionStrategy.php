@@ -1,6 +1,9 @@
 <?php
 
-namespace App\Workflow;
+namespace App\Workflow\Strategy;
+
+use App\Workflow\Place\WorkflowState;
+use App\Workflow\StateContext;
 
 class ApprovalTransitionStrategy implements TransitionStrategy {
     public function executeTransition(StateContext $context, WorkflowState $nextState) {

@@ -2,45 +2,16 @@
 
 namespace App\Workflow;
 
-use App\Repository\WorkflowRepository;
-use App\Repository\WorkflowPlaceRepository;
-use App\Repository\WorkflowTransitionRepository;
+use App\Workflow\Place\ApprovedState;
+use App\Workflow\Place\DraftState;
+use App\Workflow\Place\RejectedState;
+use App\Workflow\Place\SubmittedState;
+use App\Workflow\Strategy\ApprovalTransitionStrategy;
+use App\Workflow\Strategy\DefaultTransitionStrategy;
 use Exception;
 
 class WorkflowFactory
 {
-    public function __construct(
-        private WorkflowRepository           $repository,
-        private WorkflowPlaceRepository      $workflowPlaceRepository,
-        private WorkflowTransitionRepository $workflowTransitionRepository
-    ) {
-//        $this->repository = $repository;
-//        $this->states = $this->repository->getStates();
-//        $this->transitions = $this->repository->getTransitions($this->states);
-    }
-
-    public function createState(string $stateName): WorkflowState {
-        if (!isset($this->states[$stateName])) {
-            throw new Exception("État introuvable : $stateName");
-        }
-        return $this->states[$stateName];
-    }
-
-    public function getTransitionsForState(string $stateName): array {
-        return array_filter($this->transitions, function ($transition) use ($stateName) {
-            return $transition->fromState->name === $stateName;
-        });
-    }
-
-    public function createStrategy(string $strategyType): TransitionStrategy {
-        return match ($strategyType) {
-            'default' => new DefaultTransitionStrategy(),
-            'approval' => new ApprovalTransitionStrategy(),
-            default => throw new Exception("Stratégie inconnue : $strategyType"),
-        };
-    }
-
-    /*
     public static function createState($state) {
         switch ($state) {
             case 'draft': return new DraftState();
@@ -58,5 +29,4 @@ class WorkflowFactory
             default: throw new Exception("Stratégie inconnue");
         }
     }
-    */
 }

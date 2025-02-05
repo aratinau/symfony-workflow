@@ -2,27 +2,31 @@
 
 namespace App\Controller;
 
-use App\Form\ChangePublicStatusType;
-use App\Repository\BaseItemRepository;
-use App\Workflow\DocumentExistsValidator;
-use App\Workflow\EmailNotificationObserver;
-use App\Workflow\StateContext;
-use App\Workflow\UserHasPermissionValidator;
+use App\Entity\BaseItem;
+use App\Service\MermaidGenerator;
+use App\Workflow\Observer\EmailNotificationObserver;
+use App\Workflow\Observer\WorkflowObserver;
+use App\Workflow\Validator\DocumentExistsValidator;
+use App\Workflow\Validator\UserHasPermissionValidator;
 use App\Workflow\WorkflowFactory;
-use App\Workflow\WorkflowObserver;
+use App\Workflow\WorkflowService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Workflow\WorkflowInterface;
 
 class BaseItemWorkflowController extends AbstractController
 {
-    #[Route('/new-workflow', name: 'base_item_new_workflow')]
-    public function newWorkflow()
+    public function __construct(
+        private MermaidGenerator $mermaidGenerator,
+        private EntityManagerInterface $entityManager,
+    ) {
+    }
+
+    #[Route('/workflow-en-dur', name: 'base_item_new_workflow')]
+    public function workflowEnDur(WorkflowService $workflowService)
     {
-        $workflow = new StateContext(WorkflowFactory::createState('draft'));
+        $workflow = $workflowService->getWorkflow();
         $observer = new EmailNotificationObserver();
         WorkflowObserver::getInstance()->attach($observer);
 
@@ -45,6 +49,54 @@ class BaseItemWorkflowController extends AbstractController
         dd('ok');
     }
 
+    #[Route('/workflow-en-dur2/{baseItem}', name: 'base_item_new_workflow2')]
+    public function workflowEnDur2(BaseItem $baseItem, WorkflowService $workflowService, Request $request)
+    {
+        $type = $request->query->get('param', 'default');
+
+        $workflow = $workflowService->getWorkflow();
+        $workflow->proceed(WorkflowFactory::createStrategy($type));  // Passe à Submitted
+
+        $currentStateName = $workflow->getCurrentState();
+
+        $states = [
+            'draft' => 'Draft State',
+            'submitted' => 'Submitted State',
+            'approved' => 'Approved State',
+            'rejected' => 'Rejected State'
+        ];
+
+        $transitions = [
+            ['draft', 'submitted', 'submit'],
+            ['submitted', 'approved', 'approve'],
+            ['submitted', 'rejected', 'reject']
+        ];
+
+        $baseItem->setPublicStatus($type);
+
+        /* TODO
+        if ($orderProcessingStateMachine->can($order, 'submit')) {
+            $orderProcessingStateMachine->apply($order, 'submit');
+            $this->getDoctrine()->getManager()->flush();
+        }*/
+
+        $this->entityManager->persist($baseItem);
+        $this->entityManager->flush();
+
+        $mermaidCode = $this->mermaidGenerator->generate($states, $transitions);
+
+        return $this->render('workflow/transitions.html.twig', [
+//            'currentState' => $currentStateName::class,
+            'baseItem' => $baseItem,
+            'transitions' => [
+                'default',
+                'approval',
+            ],
+            'mermaidCode' => $mermaidCode
+        ]);
+    }
+
+    /*
     #[Route('/base-item/{id}/change-status', name: 'base_item_change_status')]
     public function changeStatus(
         int $id,
@@ -89,5 +141,5 @@ class BaseItemWorkflowController extends AbstractController
             'form' => $form->createView(),
             'enabledTransitions' => $enabledTransitions,
         ]);
-    }
+    }*/
 }

@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Order index{% endblock %}
+
+{% block body %}
+    <h1>Order index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>State</th>
+{#                <th>Name</th>#}
+                <th>actions</th>
+                <th>createdAt</th>
+                <th>updatedAt</th>
+                <th>owners</th>
+                <th>categories</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for order in orders %}
+            {% set availableTransitions = get_available_transitions(order.state) %}
+            <tr>
+                <td>{{ order.id }}</td>
+                <td>{{ order.state }}</td>
+{#                <td>{{ order.name }}</td>#}
+                <td>
+                    <a href="{{ path('app_order_show', {'id': order.id}) }}">show</a>
+                    <a href="{{ path('app_order_edit', {'id': order.id}) }}">edit</a>
+                    <a href="{{ path('order_process', {'id': order.id}) }}">order_process</a>
+                    <a href="{{ path('order_transitions', {'id': order.id}) }}">order_transitions</a>
+                    <ul>
+                        <li>passer sur <a href="{{ path('order_process', {'id': order.id, param: 'pending'}) }}">'pending'</a></li>
+                        <li>passer sur <a href="{{ path('order_process', {'id': order.id, param: 'processing'}) }}">'processing'</a></li>
+                        <li>passer sur <a href="{{ path('order_process', {'id': order.id, param: 'shipped'}) }}">'shipped'</a></li>
+                        <li>passer sur <a href="{{ path('order_process', {'id': order.id, param: 'delivered'}) }}">'delivered'</a></li>
+                        <li>passer sur <a href="{{ path('order_process', {'id': order.id, param: 'sign'}) }}">'sign'</a></li>
+                    </ul>
+
+                    <ul>
+                        {% for transition in availableTransitions %}
+                            <li>{{ transition }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>{{ order.createdAt|date('d/m/Y H:i:s') }}</td>
+                <td>{{ order.updatedAt|date('d/m/Y H:i:s') }}</td>
+                <td>
+                    {% for owner in order.owners %}
+                        {{ owner.fullname }}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for category in order.categories %}
+                        {{ category.name }}
+                    {% endfor %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_order_new') }}">Create new</a>
+{% endblock %}

@@ -5,6 +5,8 @@
 {% block body %}
     <h1>BaseItem index</h1>
 
+    <a href="{{ path('app_order_index') }}">order list</a>
+
     <table class="table">
         <thead>
             <tr>
@@ -26,8 +28,12 @@
 {#                <td>{{ base_item.description }}</td>#}
                 <td>
 {#                    <a href="{{ path('app_base_item_show', {'id': base_item.id}) }}">show</a>#}
-                    <a href="{{ path('app_base_item_edit', {'id': base_item.id}) }}">edit</a>
-                    <a href="{{ path('update_status_workflow', {'baseItem': base_item.id}) }}">workflow</a>
+                    <ul>
+                        <li><a href="{{ path('app_base_item_edit', {'id': base_item.id}) }}">edit</a></li>
+                        <li><a href="{{ path('update_status_workflow', {'baseItem': base_item.id}) }}">workflow</a></li>
+                        <li><a href="{{ path('base_item_new_workflow') }}">workflow dur</a></li>
+                        <li><a href="{{ path('base_item_new_workflow2', {baseItem: base_item.id}) }}">workflow dur 2</a></li>
+                    </ul>
                 </td>
             </tr>
         {% else %}

@@ -2,6 +2,10 @@
 
 namespace App\Workflow;
 
+use App\Workflow\Observer\WorkflowObserver;
+use App\Workflow\Place\WorkflowState;
+use App\Workflow\Strategy\TransitionStrategy;
+
 class StateContext {
     private $currentState;
 
@@ -16,5 +20,9 @@ class StateContext {
 
     public function proceed(TransitionStrategy $strategy) {
         $this->currentState->proceedToNext($this, $strategy);
+    }
+
+    public function getCurrentState() {
+        return $this->currentState;
     }
 }

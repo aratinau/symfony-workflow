@@ -5,8 +5,6 @@ namespace App\Entity;
 use App\Repository\WorkflowPlaceRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-
-// TODO renommer en WorkflowPlace
 #[ORM\Entity(repositoryClass: WorkflowPlaceRepository::class)]
 class WorkflowPlace
 {

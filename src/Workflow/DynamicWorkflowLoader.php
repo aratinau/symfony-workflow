@@ -11,6 +11,9 @@ use Symfony\Component\Workflow\Transition as WorkflowTransition;
 use Symfony\Component\Workflow\Workflow;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
+/***
+ * @deprecated
+ */
 class DynamicWorkflowLoader
 {
     public function __construct(

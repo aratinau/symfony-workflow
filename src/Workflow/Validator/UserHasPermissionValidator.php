@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Workflow;
+namespace App\Workflow\Validator;
 
 class UserHasPermissionValidator extends TransitionValidator {
     public function validate($request) {

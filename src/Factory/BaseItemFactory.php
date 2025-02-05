@@ -30,6 +30,7 @@ final class BaseItemFactory extends PersistentProxyObjectFactory
         return [
             'subject' => self::faker()->text(35),
             'description' => self::faker()->sentences(6, true),
+            'publicStatus' => 'draft'
         ];
     }
 

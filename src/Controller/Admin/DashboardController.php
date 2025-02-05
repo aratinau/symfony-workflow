@@ -2,10 +2,12 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Order;
+use App\Entity\OrderWorklowPlace;
 use App\Entity\Workflow;
-use App\Entity\Workflow\Place;
 use App\Entity\WorkflowPlace;
 use App\Entity\WorkflowTransition;
+use App\WorkflowOrder\OrderWorkflow;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -69,5 +71,8 @@ class DashboardController extends AbstractDashboardController
                 ['workflow' => $target->getId()]
             );
         }
+
+        yield MenuItem::linkToCrud('Orders', 'fas fa-list', Order::class);
+        yield MenuItem::linkToCrud('Transitions', 'fas fa-list', OrderWorklowPlace::class);
     }
 }

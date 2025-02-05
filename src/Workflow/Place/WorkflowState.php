@@ -1,6 +1,9 @@
 <?php
 
-namespace App\Workflow;
+namespace App\Workflow\Place;
+
+use App\Workflow\StateContext;
+use App\Workflow\Strategy\TransitionStrategy;
 
 interface WorkflowState
 {

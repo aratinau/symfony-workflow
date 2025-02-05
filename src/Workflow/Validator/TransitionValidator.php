@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Workflow;
+namespace App\Workflow\Validator;
 
 abstract class TransitionValidator {
     protected $next;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Workflow;
+namespace App\Workflow\Validator;
 
 class DocumentExistsValidator extends TransitionValidator {
     public function validate($request) {
