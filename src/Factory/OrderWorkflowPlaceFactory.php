@@ -2,13 +2,13 @@
 
 namespace App\Factory;
 
-use App\Entity\OrderWorklowPlace;
+use App\Entity\OrderWorkflowPlace;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**
- * @extends PersistentProxyObjectFactory<OrderWorklowPlace>
+ * @extends PersistentProxyObjectFactory<OrderWorkflowPlace>
  */
-final class OrderWorklowPlaceFactory extends PersistentProxyObjectFactory
+final class OrderWorkflowPlaceFactory extends PersistentProxyObjectFactory
 {
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
@@ -21,7 +21,7 @@ final class OrderWorklowPlaceFactory extends PersistentProxyObjectFactory
 
     public static function class(): string
     {
-        return OrderWorklowPlace::class;
+        return OrderWorkflowPlace::class;
     }
 
     /**
@@ -42,7 +42,7 @@ final class OrderWorklowPlaceFactory extends PersistentProxyObjectFactory
     protected function initialize(): static
     {
         return $this
-            // ->afterInstantiate(function(OrderWorklowPlace $orderWorklowPlace): void {})
+            // ->afterInstantiate(function(OrderWorkflowPlace $orderWorkflowPlace): void {})
         ;
     }
 }

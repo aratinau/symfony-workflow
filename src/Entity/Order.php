@@ -36,6 +36,9 @@ class Order
     #[ORM\ManyToMany(targetEntity: Category::class)]
     private Collection $categories;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $amount = null;
+
     public function __construct()
     {
         $this->state = 'pending'; // État initial
@@ -114,6 +117,18 @@ class Order
     public function removeCategory(Category $category): static
     {
         $this->categories->removeElement($category);
+
+        return $this;
+    }
+
+    public function getAmount(): ?int
+    {
+        return $this->amount;
+    }
+
+    public function setAmount(int $amount): static
+    {
+        $this->amount = $amount;
 
         return $this;
     }

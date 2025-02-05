@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Factory\BaseItemFactory;
 use App\Factory\OrderFactory;
+use App\Factory\OrderWorkflowFactory;
 use App\Factory\UserFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;

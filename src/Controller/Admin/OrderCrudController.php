@@ -6,6 +6,7 @@ use App\Entity\Order;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class OrderCrudController extends AbstractCrudController
@@ -33,6 +34,7 @@ class OrderCrudController extends AbstractCrudController
                 'choice_label' => 'name', // Spécifie l'attribut à afficher
 
             ]),
+            IntegerField::new('amount'),
         ];
 
     }

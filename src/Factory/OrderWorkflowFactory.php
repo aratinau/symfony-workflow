@@ -2,13 +2,13 @@
 
 namespace App\Factory;
 
-use App\Entity\Order;
+use App\Entity\OrderWorkflow;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**
- * @extends PersistentProxyObjectFactory<Order>
+ * @extends PersistentProxyObjectFactory<OrderWorkflow>
  */
-final class OrderFactory extends PersistentProxyObjectFactory
+final class OrderWorkflowFactory extends PersistentProxyObjectFactory
 {
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
@@ -21,7 +21,7 @@ final class OrderFactory extends PersistentProxyObjectFactory
 
     public static function class(): string
     {
-        return Order::class;
+        return OrderWorkflow::class;
     }
 
     /**
@@ -33,10 +33,6 @@ final class OrderFactory extends PersistentProxyObjectFactory
     {
         return [
             'name' => self::faker()->text(255),
-            'state' => 'pending',
-            'createdAt' => self::faker()->dateTime(),
-            'updatedAt' => self::faker()->dateTime(),
-            'amount' => self::faker()->randomDigit(),
         ];
     }
 
@@ -46,7 +42,7 @@ final class OrderFactory extends PersistentProxyObjectFactory
     protected function initialize(): static
     {
         return $this
-            // ->afterInstantiate(function(Order $order): void {})
+            // ->afterInstantiate(function(OrderWorkflow $orderWorkflow): void {})
         ;
     }
 }

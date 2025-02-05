@@ -7,22 +7,41 @@ use App\Form\OrderType;
 use App\WorkflowOrder\OrderWorkflow;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/order')]
+#[IsGranted('ROLE_USER')]
 final class OrderController extends AbstractController
 {
+    public function __construct(
+        private Security $security,
+    )
+    {
+    }
+
     #[Route('/order/process/{id}', name: 'order_process')]
     public function process(Order $order, EntityManagerInterface $em, OrderWorkflow $workflow, Request $request): JsonResponse
     {
         $nextState = $request->query->get('param', '');
+        $currentUser = $this->security->getUser();
 
         try {
-            $workflow->process($order, $nextState);
-            $em->flush();
+            $context = [
+                'user' => $currentUser,
+                'order_total' => $order->getAmount(),
+            ];
+
+            if ($workflow->canTransition($order->getState(), 'shipped', $context)) {
+                $workflow->process($order, $nextState);
+                $em->flush();
+            } else {
+                return new JsonResponse(['error' => 'Transition non autorisée'], 400);
+            }
 
             return new JsonResponse([
                 'id' => $order->getId(),
@@ -48,7 +67,7 @@ final class OrderController extends AbstractController
     {
         $orders = $entityManager
             ->getRepository(Order::class)
-            ->findBy([], ['updatedAt' => 'DESC']);
+            ->findAll();
 
         return $this->render('order/index.html.twig', [
             'orders' => $orders,

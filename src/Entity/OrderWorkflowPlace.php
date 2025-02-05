@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\OrderWorklowPlaceRepository;
+use App\Repository\OrderWorkflowPlaceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: OrderWorklowPlaceRepository::class)]
-class OrderWorklowPlace
+#[ORM\Entity(repositoryClass: OrderWorkflowPlaceRepository::class)]
+class OrderWorkflowPlace
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -23,6 +23,16 @@ class OrderWorklowPlace
      */
     #[ORM\ManyToMany(targetEntity: self::class)]
     private Collection $allowedTransitions;
+
+    // TODO : plusieurs conditions ? singulier ? pluriels ?
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $conditions = null;
+
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $allowedRoles = [];
+
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $actions = [];
 
     public function __construct()
     {
@@ -67,6 +77,37 @@ class OrderWorklowPlace
     {
         $this->allowedTransitions->removeElement($allowedTransition);
 
+        return $this;
+    }
+    public function getConditions(): ?string
+    {
+        return $this->conditions;
+    }
+
+    public function setConditions(?string $conditions): static
+    {
+        $this->conditions = $conditions;
+        return $this;
+    }
+
+    public function getAllowedRoles(): ?array
+    {
+        return $this->allowedRoles;
+    }
+
+    public function setAllowedRoles(?array $allowedRoles): static
+    {
+        $this->allowedRoles = $allowedRoles;
+        return $this;
+    }
+    public function getActions(): ?array
+    {
+        return $this->actions;
+    }
+
+    public function setActions(?array $actions): static
+    {
+        $this->actions = $actions;
         return $this;
     }
 }

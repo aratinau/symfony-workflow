@@ -2,12 +2,17 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Category;
 use App\Entity\Order;
-use App\Entity\OrderWorklowPlace;
+use App\Entity\OrderWorkflowPlace;
+use App\Entity\OrderWorkflowPlaceData;
+use App\Entity\OrderWorkflowPlaceDataMapping;
 use App\Entity\Workflow;
+use App\Entity\Workflow\Place;
+use App\Entity\Workflow\Transition;
 use App\Entity\WorkflowPlace;
 use App\Entity\WorkflowTransition;
-use App\WorkflowOrder\OrderWorkflow;
+use App\Entity\OrderWorkflow;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -53,9 +58,12 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
 
-        yield MenuItem::linkToCrud('Workflow', 'fas fa-list', Workflow::class);
-        yield MenuItem::linkToCrud('WorkflowState', 'fas fa-list', WorkflowPlace::class);
-        yield MenuItem::linkToCrud('WorkflowTransition', 'fas fa-list', WorkflowTransition::class);
+        yield MenuItem::linkToCrud('Category', 'fas fa-list', Category::class);
+
+//        yield MenuItem::linkToCrud('Workflow', 'fas fa-list', Workflow::class);
+//        yield MenuItem::linkToCrud('WorkflowState', 'fas fa-list', WorkflowPlace::class);
+//        yield MenuItem::linkToCrud('WorkflowTransition', 'fas fa-list', WorkflowTransition::class);
+
 
         $workflows = $this->entityManager
             ->getRepository(Workflow::class)
@@ -73,6 +81,16 @@ class DashboardController extends AbstractDashboardController
         }
 
         yield MenuItem::linkToCrud('Orders', 'fas fa-list', Order::class);
-        yield MenuItem::linkToCrud('Transitions', 'fas fa-list', OrderWorklowPlace::class);
+
+        yield MenuItem::subMenu('Workflow', 'fa-solid fa-project-diagram')
+            ->setSubItems([
+                MenuItem::linkToCrud('Workflow', 'fas fa-list', OrderWorkflow::class),
+                MenuItem::linkToCrud('Transitions Place', 'fa-solid fa-location-arrow', OrderWorkflowPlace::class),
+                MenuItem::linkToCrud('Transitions Mapping', 'fa-solid fa-arrows-turn-to-dots', OrderWorkflowPlaceDataMapping::class),
+                MenuItem::linkToCrud('Transitions Data', 'fas fa-list', OrderWorkflowPlaceData::class),
+            ])
+        ;
+
+
     }
 }

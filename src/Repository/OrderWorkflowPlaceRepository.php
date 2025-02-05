@@ -2,22 +2,22 @@
 
 namespace App\Repository;
 
-use App\Entity\OrderWorklowPlace;
+use App\Entity\OrderWorkflowPlace;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<OrderWorklowPlace>
+ * @extends ServiceEntityRepository<OrderWorkflowPlace>
  */
-class OrderWorklowPlaceRepository extends ServiceEntityRepository
+class OrderWorkflowPlaceRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, OrderWorklowPlace::class);
+        parent::__construct($registry, OrderWorkflowPlace::class);
     }
 
     //    /**
-    //     * @return OrderWorklowPlace[] Returns an array of OrderWorklowPlace objects
+    //     * @return OrderWorkflowPlace[] Returns an array of OrderWorkflowPlace objects
     //     */
     //    public function findByExampleField($value): array
     //    {
@@ -31,7 +31,7 @@ class OrderWorklowPlaceRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?OrderWorklowPlace
+    //    public function findOneBySomeField($value): ?OrderWorkflowPlace
     //    {
     //        return $this->createQueryBuilder('o')
     //            ->andWhere('o.exampleField = :val')

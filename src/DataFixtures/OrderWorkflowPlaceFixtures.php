@@ -2,14 +2,19 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\OrderWorklowPlace;
+use App\Entity\OrderWorkflow;
+use App\Entity\OrderWorkflowPlace;
+use App\Factory\OrderWorkflowFactory;
+use App\Factory\OrderWorkflowPlaceFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class OrderWorklowPlaceFixtures extends Fixture
+class OrderWorkflowPlaceFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
+
         // Définir les états et leurs transitions autorisées
         $states = [
             'pending' => ['processing', 'shipped'],
@@ -24,7 +29,7 @@ class OrderWorklowPlaceFixtures extends Fixture
 
         // Instancier chaque état
         foreach ($states as $name => $allowedTransitions) {
-            $state = new OrderWorklowPlace();
+            $state = new OrderWorkflowPlace();
             $state->setName($name);
 
             // Ajouter l'état au tableau temporaire
