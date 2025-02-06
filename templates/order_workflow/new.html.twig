@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New OrderWorkflow{% endblock %}
+
+{% block body %}
+    <h1>Create new OrderWorkflow</h1>
+
+    {{ include('order_workflow/_form.html.twig') }}
+
+    <a href="{{ path('app_order_workflow_index') }}">back to list</a>
+{% endblock %}

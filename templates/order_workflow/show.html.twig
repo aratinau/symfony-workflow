@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}OrderWorkflow{% endblock %}
+
+{% block body %}
+    <h1>OrderWorkflow</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ order_workflow.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ order_workflow.name }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_order_workflow_index') }}">back to list</a>
+
+    <a href="{{ path('app_order_workflow_edit', {'id': order_workflow.id}) }}">edit</a>
+
+    {{ include('order_workflow/_delete_form.html.twig') }}
+{% endblock %}

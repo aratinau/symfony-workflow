@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}OrderWorkflow index{% endblock %}
+
+{% block body %}
+    <h1>OrderWorkflow index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Appliquer sur Commande</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for order_workflow in order_workflows %}
+            <tr>
+                <td>{{ order_workflow.id }}</td>
+                <td>{{ order_workflow.name }}</td>
+                <td><a href="{{ path('app_order_index', {
+                        entityWorkflow: order_workflow.id
+                    }) }}">go</a></td>
+                <td>
+                    <div class="mermaid">
+                        {{ mermaid_generator.generate(order_workflow.states, order_workflow.transitions) | raw }}
+                    </div>
+                </td>
+                <td>
+                    <a href="{{ path('app_order_workflow_show', {'id': order_workflow.id}) }}">show</a>
+                    <a href="{{ path('app_order_workflow_edit', {'id': order_workflow.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_order_workflow_new') }}">Create new</a>
+{% endblock %}

@@ -19,7 +19,7 @@ class Order
     private ?int $id = null;
 
     #[ORM\Column(type: "string", length: 50)]
-    private string $state;
+    private string $state; // état workflow
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -38,6 +38,9 @@ class Order
 
     #[ORM\Column(nullable: true)]
     private ?int $amount = null;
+
+    #[ORM\ManyToOne(inversedBy: 'orders')]
+    private ?Workflow $currentWorkflow = null;
 
     public function __construct()
     {
@@ -129,6 +132,18 @@ class Order
     public function setAmount(int $amount): static
     {
         $this->amount = $amount;
+
+        return $this;
+    }
+
+    public function getCurrentWorkflow(): ?Workflow
+    {
+        return $this->currentWorkflow;
+    }
+
+    public function setCurrentWorkflow(?Workflow $currentWorkflow): static
+    {
+        $this->currentWorkflow = $currentWorkflow;
 
         return $this;
     }

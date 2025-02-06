@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Order;
 use App\Form\OrderType;
 use App\WorkflowOrder\OrderWorkflow;
+use App\Entity\OrderWorkflow as EntityOrderWorkflow;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -14,21 +15,31 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/order')]
+#[Route('/order/controller')]
 #[IsGranted('ROLE_USER')]
 final class OrderController extends AbstractController
 {
     public function __construct(
         private Security $security,
-    )
-    {
+    ) {
     }
 
-    #[Route('/order/process/{id}', name: 'order_process')]
-    public function process(Order $order, EntityManagerInterface $em, OrderWorkflow $workflow, Request $request): JsonResponse
+    #[Route('/{entityWorkflow}/order/process/{id}', name: 'change_state_workflow')]
+    public function process(
+        EntityOrderWorkflow $entityWorkflow,
+        Order $order,
+        EntityManagerInterface $em,
+        OrderWorkflow $workflow,
+        Request $request): JsonResponse|Response
     {
         $nextState = $request->query->get('param', '');
         $currentUser = $this->security->getUser();
+
+        if ($nextState === '') {
+            return new JsonResponse([
+                'error' => 'nextState is empty',
+            ], 400);
+        }
 
         try {
             $context = [
@@ -36,41 +47,49 @@ final class OrderController extends AbstractController
                 'order_total' => $order->getAmount(),
             ];
 
-            if ($workflow->canTransition($order->getState(), 'shipped', $context)) {
-                $workflow->process($order, $nextState);
+            if ($workflow->canTransition($entityWorkflow, $order->getState(), $nextState, $context)) {
+                $workflow->process($entityWorkflow, $order, $nextState);
                 $em->flush();
             } else {
-                return new JsonResponse(['error' => 'Transition non autorisée'], 400);
+                return new JsonResponse([
+                    'error' => sprintf('Transition non autorisée de %s ➝ %s', $order->getState(), $nextState),
+                ], 400);
             }
 
-            return new JsonResponse([
-                'id' => $order->getId(),
-                'new_state' => $order->getState(),
+            $this->addFlash('success', 'Etat mis à jour avec succès.');
+
+            return $this->redirectToRoute('app_order_index', [
+                'entityWorkflow' => $entityWorkflow->getId()
             ]);
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], 400);
         }
     }
 
-    #[Route('/order/transitions/{id}', name: 'order_transitions')]
-    public function getTransitions(Order $order, OrderWorkflow $workflow): JsonResponse
+    #[Route('/order/transitions/{id}/workflow/{workflow}', name: 'order_transitions')]
+    public function getTransitions(Order $order, EntityOrderWorkflow $entityWorkflow, OrderWorkflow $workflow): JsonResponse
     {
         return new JsonResponse([
             'id' => $order->getId(),
             'current_state' => $order->getState(),
-            'available_transitions' => $workflow->getAvailableTransitions($order->getState()),
+            'available_transitions' => $workflow->getAvailableTransitions($entityWorkflow, $order->getState()),
         ]);
     }
 
-    #[Route(name: 'app_order_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager, OrderWorkflow $workflow): Response
+    #[Route('/{entityWorkflow}', name: 'app_order_index', methods: ['GET'])]
+    public function index(EntityOrderWorkflow $entityWorkflow, EntityManagerInterface $entityManager): Response
     {
         $orders = $entityManager
             ->getRepository(Order::class)
             ->findAll();
+        $workflows = $entityManager
+            ->getRepository(EntityOrderWorkflow::class)
+            ->findAll();
 
         return $this->render('order/index.html.twig', [
             'orders' => $orders,
+            'workflows' => $workflows,
+            'workflow' => $entityWorkflow
         ]);
     }
 

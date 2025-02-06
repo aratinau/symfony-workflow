@@ -3,20 +3,20 @@
 namespace App\WorkflowOrder;
 
 use App\Entity\OrderWorkflowPlace;
+use App\Repository\OrderWorkflowPlaceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class OrderTransition
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
+        private OrderWorkflowPlaceRepository $orderWorkflowPlaceRepository,
     ) {
     }
 
-    public function getAllTransitions(): array
+    public function getAllTransitions(int $workflow): array
     {
-        $places = $this->entityManager
-            ->getRepository(OrderWorkflowPlace::class)
-            ->findAll();
+        $places = $this->orderWorkflowPlaceRepository->findPlacesByWorkflow($workflow);
 
         $transitions = [];
         foreach ($places as $place) {

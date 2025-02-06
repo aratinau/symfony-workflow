@@ -27,12 +27,19 @@ class Workflow
     #[ORM\OneToMany(targetEntity: WorkflowTransition::class, mappedBy: "workflow", cascade: ["persist", "remove"])]
     private Collection $transitions;
 
+    /**
+     * @var Collection<int, Order>
+     */
+    #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'currentWorkflow')]
+    private Collection $orders;
+
     public function __construct(string $name, ?string $description = null)
     {
         $this->name = $name;
         $this->description = $description;
         $this->states = new ArrayCollection();
         $this->transitions = new ArrayCollection();
+        $this->orders = new ArrayCollection();
     }
 
     public function getId(): int
@@ -110,5 +117,35 @@ class Workflow
                 $transition->setWorkflow(null);
             }
         }
+    }
+
+    /**
+     * @return Collection<int, Order>
+     */
+    public function getOrders(): Collection
+    {
+        return $this->orders;
+    }
+
+    public function addOrder(Order $order): static
+    {
+        if (!$this->orders->contains($order)) {
+            $this->orders->add($order);
+            $order->setCurrentWorkflow($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrder(Order $order): static
+    {
+        if ($this->orders->removeElement($order)) {
+            // set the owning side to null (unless already changed)
+            if ($order->getCurrentWorkflow() === $this) {
+                $order->setCurrentWorkflow(null);
+            }
+        }
+
+        return $this;
     }
 }

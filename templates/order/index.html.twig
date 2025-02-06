@@ -10,40 +10,34 @@
             <tr>
                 <th>Id</th>
                 <th>State</th>
+                <th>workflow</th>
 {#                <th>Name</th>#}
-                <th>actions</th>
                 <th>createdAt</th>
                 <th>updatedAt</th>
                 <th>owners</th>
                 <th>categories</th>
+                <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for order in orders %}
-            {% set availableTransitions = get_available_transitions(order.state) %}
+            {% set availableTransitions = get_available_transitions(workflow.id, order.state) %}
             <tr>
                 <td>{{ order.id }}</td>
                 <td>{{ order.state }}</td>
-{#                <td>{{ order.name }}</td>#}
                 <td>
-                    <a href="{{ path('app_order_show', {'id': order.id}) }}">show</a>
-                    <a href="{{ path('app_order_edit', {'id': order.id}) }}">edit</a>
-                    <a href="{{ path('order_process', {'id': order.id}) }}">order_process</a>
-                    <a href="{{ path('order_transitions', {'id': order.id}) }}">order_transitions</a>
-                    <ul>
-                        <li>passer sur <a href="{{ path('order_process', {'id': order.id, param: 'pending'}) }}">'pending'</a></li>
-                        <li>passer sur <a href="{{ path('order_process', {'id': order.id, param: 'processing'}) }}">'processing'</a></li>
-                        <li>passer sur <a href="{{ path('order_process', {'id': order.id, param: 'shipped'}) }}">'shipped'</a></li>
-                        <li>passer sur <a href="{{ path('order_process', {'id': order.id, param: 'delivered'}) }}">'delivered'</a></li>
-                        <li>passer sur <a href="{{ path('order_process', {'id': order.id, param: 'sign'}) }}">'sign'</a></li>
-                    </ul>
-
+                    {# workflow #}
                     <ul>
                         {% for transition in availableTransitions %}
-                            <li>{{ transition }}</li>
+                            <li><a href="{{ path('change_state_workflow', {
+                                    entityWorkflow: workflow.id,
+                                    id: order.id,
+                                    param: transition
+                                })}}">{{ transition }}</a></li>
                         {% endfor %}
                     </ul>
                 </td>
+{#                <td>{{ order.name }}</td>#}
                 <td>{{ order.createdAt|date('d/m/Y H:i:s') }}</td>
                 <td>{{ order.updatedAt|date('d/m/Y H:i:s') }}</td>
                 <td>
@@ -55,6 +49,28 @@
                     {% for category in order.categories %}
                         {{ category.name }}
                     {% endfor %}
+                </td>
+                <td>
+                    <a href="{{ path('app_order_show', {'id': order.id}) }}">show</a>
+                    <a href="{{ path('app_order_edit', {'id': order.id}) }}">edit</a>
+                    {#                    <a href="{{ path('order_process', {'id': order.id}) }}">order_process</a>#}
+                    {#                    <a href="{{ path('order_transitions', {'id': order.id}) }}">order_transitions</a>#}
+
+                    {#
+                    <ul>
+                        <li>passer sur <a href="{{ path('order_process', {'id': order.id, param: 'pending'}) }}">'pending'</a></li>
+                        <li>passer sur <a href="{{ path('order_process', {'id': order.id, param: 'processing'}) }}">'processing'</a></li>
+                        <li>passer sur <a href="{{ path('order_process', {'id': order.id, param: 'shipped'}) }}">'shipped'</a></li>
+                        <li>passer sur <a href="{{ path('order_process', {'id': order.id, param: 'delivered'}) }}">'delivered'</a></li>
+                        <li>passer sur <a href="{{ path('order_process', {'id': order.id, param: 'sign'}) }}">'sign'</a></li>
+                    </ul> #}
+
+                    {#
+                    <ul>
+                        {% for transition in availableTransitions %}
+                            <li>{{ transition }}</li>
+                        {% endfor %}
+                    </ul> #}
                 </td>
             </tr>
         {% else %}

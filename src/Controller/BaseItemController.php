@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/')]
+#[Route('/base_items')]
 #[IsGranted('ROLE_USER')]
 class BaseItemController extends AbstractController
 {

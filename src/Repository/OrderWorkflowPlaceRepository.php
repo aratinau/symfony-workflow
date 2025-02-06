@@ -16,20 +16,14 @@ class OrderWorkflowPlaceRepository extends ServiceEntityRepository
         parent::__construct($registry, OrderWorkflowPlace::class);
     }
 
-    //    /**
-    //     * @return OrderWorkflowPlace[] Returns an array of OrderWorkflowPlace objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('o')
-    //            ->andWhere('o.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('o.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findPlacesByWorkflow(int $workflowId): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.workflow = :workflowId')
+            ->setParameter('workflowId', $workflowId)
+            ->getQuery()
+            ->getResult();
+    }
 
     //    public function findOneBySomeField($value): ?OrderWorkflowPlace
     //    {

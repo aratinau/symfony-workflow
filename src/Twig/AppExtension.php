@@ -22,8 +22,8 @@ class AppExtension extends AbstractExtension
         ];
     }
 
-    public function getAvailableTransitions($state)
+    public function getAvailableTransitions($workflow, $state)
     {
-        return $this->workflow->getAvailableTransitions($state);
+        return $this->workflow->getAvailableTransitions($workflow, $state);
     }
 }

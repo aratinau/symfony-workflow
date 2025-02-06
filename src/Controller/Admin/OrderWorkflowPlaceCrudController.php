@@ -3,6 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\OrderWorkflowPlace;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -26,6 +28,12 @@ class OrderWorkflowPlaceCrudController extends AbstractCrudController
                     'choice_label' => 'name',
                 ]),
 
+            AssociationField::new('workflow', 'Workflow')
+                ->setFormTypeOption('choice_label', 'name')
+                ->setRequired(true)
+                ->formatValue(function ($value, $entity) {
+                    return $entity->getWorkflow() ? $entity->getWorkflow()->getName() : 'N/A';
+                }),
 
             TextField::new('conditions')
                 ->setFormTypeOptions(['required' => false])

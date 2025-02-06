@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomepageController!{% endblock %}
+
+{% block body %}
+
+    <ul>
+        <li><a href="{{ path('app_order_workflow_index') }}">tous les workflows</a></li>
+        <li><a href="{{ path('app_base_item_index') }}">tous les base items (déprécié)</a></li>
+    </ul>
+
+{% endblock %}
