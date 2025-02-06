@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Workflow;
+namespace App\WorkflowDeprecated;
 
 
 class WorkflowService

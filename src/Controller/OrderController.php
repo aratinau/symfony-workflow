@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Order;
 use App\Form\OrderType;
-use App\WorkflowOrder\OrderWorkflow;
+use App\Repository\OrderWorkflowPlaceRepository;
+use App\Repository\OrderWorkflowRepository;
+use App\WorkflowOrder\OrderWorkflowService;
 use App\Entity\OrderWorkflow as EntityOrderWorkflow;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,25 +23,27 @@ final class OrderController extends AbstractController
 {
     public function __construct(
         private Security $security,
+        private OrderWorkflowPlaceRepository $orderWorkflowPlaceRepository,
     ) {
     }
 
     #[Route('/{entityWorkflow}/order/process/{id}', name: 'change_state_workflow')]
     public function process(
-        EntityOrderWorkflow $entityWorkflow,
-        Order $order,
+        EntityOrderWorkflow    $entityWorkflow,
+        Order                  $order,
         EntityManagerInterface $em,
-        OrderWorkflow $workflow,
-        Request $request): JsonResponse|Response
+        OrderWorkflowService   $workflow,
+        Request                $request): JsonResponse|Response
     {
-        $nextState = $request->query->get('param', '');
+        $targetPlace = $request->query->get('param', '');
         $currentUser = $this->security->getUser();
 
-        if ($nextState === '') {
+        if ($targetPlace === '') {
             return new JsonResponse([
                 'error' => 'nextState is empty',
             ], 400);
         }
+        $targetPlace = $this->orderWorkflowPlaceRepository->find($targetPlace);
 
         try {
             $context = [
@@ -47,12 +51,12 @@ final class OrderController extends AbstractController
                 'order_total' => $order->getAmount(),
             ];
 
-            if ($workflow->canTransition($entityWorkflow, $order->getState(), $nextState, $context)) {
-                $workflow->process($entityWorkflow, $order, $nextState);
+            if ($workflow->canTransition($entityWorkflow, $order->getCurrentState(), $targetPlace, $context)) {
+                $workflow->applyTransition($entityWorkflow, $order, $targetPlace);
                 $em->flush();
             } else {
                 return new JsonResponse([
-                    'error' => sprintf('Transition non autorisée de %s ➝ %s', $order->getState(), $nextState),
+                    'error' => sprintf('Transition non autorisée de %s ➝ %s', $order->getState(), $targetPlace->getName()),
                 ], 400);
             }
 
@@ -67,7 +71,7 @@ final class OrderController extends AbstractController
     }
 
     #[Route('/order/transitions/{id}/workflow/{workflow}', name: 'order_transitions')]
-    public function getTransitions(Order $order, EntityOrderWorkflow $entityWorkflow, OrderWorkflow $workflow): JsonResponse
+    public function getTransitions(Order $order, EntityOrderWorkflow $entityWorkflow, OrderWorkflowService $workflow): JsonResponse
     {
         return new JsonResponse([
             'id' => $order->getId(),
@@ -81,7 +85,7 @@ final class OrderController extends AbstractController
     {
         $orders = $entityManager
             ->getRepository(Order::class)
-            ->findAll();
+            ->findBy([], ['id' => 'DESC']);
         $workflows = $entityManager
             ->getRepository(EntityOrderWorkflow::class)
             ->findAll();

@@ -33,7 +33,6 @@ final class OrderFactory extends PersistentProxyObjectFactory
     {
         return [
             'name' => self::faker()->text(255),
-            'state' => 'pending',
             'createdAt' => self::faker()->dateTime(),
             'updatedAt' => self::faker()->dateTime(),
             'amount' => self::faker()->randomDigit(),

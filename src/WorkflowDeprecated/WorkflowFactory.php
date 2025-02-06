@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Workflow;
+namespace App\WorkflowDeprecated;
 
-use App\Workflow\Place\ApprovedState;
-use App\Workflow\Place\DraftState;
-use App\Workflow\Place\RejectedState;
-use App\Workflow\Place\SubmittedState;
-use App\Workflow\Strategy\ApprovalTransitionStrategy;
-use App\Workflow\Strategy\DefaultTransitionStrategy;
+use App\WorkflowDeprecated\Place\ApprovedState;
+use App\WorkflowDeprecated\Place\DraftState;
+use App\WorkflowDeprecated\Place\RejectedState;
+use App\WorkflowDeprecated\Place\SubmittedState;
+use App\WorkflowDeprecated\Strategy\ApprovalTransitionStrategy;
+use App\WorkflowDeprecated\Strategy\DefaultTransitionStrategy;
 use Exception;
 
 class WorkflowFactory

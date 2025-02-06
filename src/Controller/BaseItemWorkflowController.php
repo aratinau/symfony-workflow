@@ -3,13 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\BaseItem;
-use App\Service\MermaidGenerator;
-use App\Workflow\Observer\EmailNotificationObserver;
-use App\Workflow\Observer\WorkflowObserver;
-use App\Workflow\Validator\DocumentExistsValidator;
-use App\Workflow\Validator\UserHasPermissionValidator;
-use App\Workflow\WorkflowFactory;
-use App\Workflow\WorkflowService;
+use App\WorkflowDeprecated\Observer\EmailNotificationObserver;
+use App\WorkflowDeprecated\Observer\WorkflowObserver;
+use App\WorkflowDeprecated\Validator\DocumentExistsValidator;
+use App\WorkflowDeprecated\Validator\UserHasPermissionValidator;
+use App\WorkflowDeprecated\WorkflowFactory;
+use App\WorkflowDeprecated\WorkflowService;
+use App\WorkflowOrder\MermaidGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

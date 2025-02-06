@@ -5,6 +5,11 @@ namespace App\Entity;
 use App\Repository\WorkflowPlaceRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+
+/**
+ * Class Workflow
+ * @deprecated
+ */
 #[ORM\Entity(repositoryClass: WorkflowPlaceRepository::class)]
 class WorkflowPlace
 {

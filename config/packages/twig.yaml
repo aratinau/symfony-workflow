@@ -1,7 +1,7 @@
 twig:
     file_name_pattern: '*.twig'
     globals:
-        mermaid_generator: '@App\Service\MermaidGenerator'
+        mermaid_generator: '@App\WorkflowOrder\MermaidGenerator'
 when@test:
     twig:
         strict_variables: true

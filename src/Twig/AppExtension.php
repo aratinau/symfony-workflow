@@ -2,17 +2,15 @@
 
 namespace App\Twig;
 
-use App\WorkflowOrder\OrderWorkflow;
+use App\WorkflowOrder\OrderTransition;
+use App\WorkflowOrder\OrderWorkflowService;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class AppExtension extends AbstractExtension
 {
-    private $workflow;
-
-    public function __construct(OrderWorkflow $workflow)
+    public function __construct(private OrderTransition $orderTransition)
     {
-        $this->workflow = $workflow;
     }
 
     public function getFunctions()
@@ -24,6 +22,6 @@ class AppExtension extends AbstractExtension
 
     public function getAvailableTransitions($workflow, $state)
     {
-        return $this->workflow->getAvailableTransitions($workflow, $state);
+        return $this->orderTransition->getAvailableTransitions($workflow, $state);
     }
 }

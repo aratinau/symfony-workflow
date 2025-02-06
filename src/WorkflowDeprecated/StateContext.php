@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Workflow;
+namespace App\WorkflowDeprecated;
 
-use App\Workflow\Observer\WorkflowObserver;
-use App\Workflow\Place\WorkflowState;
-use App\Workflow\Strategy\TransitionStrategy;
+use App\WorkflowDeprecated\Observer\WorkflowObserver;
+use App\WorkflowDeprecated\Place\WorkflowState;
+use App\WorkflowDeprecated\Strategy\TransitionStrategy;
 
 class StateContext {
     private $currentState;

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Workflow\Place;
+namespace App\WorkflowDeprecated\Place;
 
-use App\Workflow\StateContext;
-use App\Workflow\Strategy\TransitionStrategy;
+use App\WorkflowDeprecated\StateContext;
+use App\WorkflowDeprecated\Strategy\TransitionStrategy;
 
 class DraftState implements WorkflowState {
     public function proceedToNext(StateContext $context, TransitionStrategy $strategy) {

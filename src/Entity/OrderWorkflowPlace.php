@@ -19,10 +19,16 @@ class OrderWorkflowPlace
     private ?string $name = null;
 
     /**
-     * @var Collection<int, self>
+     * @var Collection<int, OrderWorkflowTransition>
      */
-    #[ORM\ManyToMany(targetEntity: self::class)]
-    private Collection $allowedTransitions;
+    #[ORM\OneToMany(targetEntity: OrderWorkflowTransition::class, mappedBy: 'fromPlace', orphanRemoval: true)]
+    private Collection $outgoingTransitions;
+
+    /**
+     * @var Collection<int, OrderWorkflowTransition>
+     */
+    #[ORM\OneToMany(targetEntity: OrderWorkflowTransition::class, mappedBy: 'toPlace', orphanRemoval: true)]
+    private Collection $incomingTransitions;
 
     // TODO : plusieurs conditions ? singulier ? pluriels ?
     #[ORM\Column(type: 'text', nullable: true)]
@@ -40,7 +46,8 @@ class OrderWorkflowPlace
 
     public function __construct()
     {
-        $this->allowedTransitions = new ArrayCollection();
+        $this->outgoingTransitions = new ArrayCollection();
+        $this->incomingTransitions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -61,28 +68,65 @@ class OrderWorkflowPlace
     }
 
     /**
-     * @return Collection<int, self>
+     * @return Collection<int, OrderWorkflowTransition>
      */
-    public function getAllowedTransitions(): Collection
+    public function getOutgoingTransitions(): Collection
     {
-        return $this->allowedTransitions;
+        return $this->outgoingTransitions;
     }
 
-    public function addAllowedTransition(self $allowedTransition): static
+    public function addOutgoingTransition(OrderWorkflowTransition $outgoingTransition): static
     {
-        if (!$this->allowedTransitions->contains($allowedTransition)) {
-            $this->allowedTransitions->add($allowedTransition);
+        if (!$this->outgoingTransitions->contains($outgoingTransition)) {
+            $this->outgoingTransitions->add($outgoingTransition);
+            $outgoingTransition->setFromPlace($this);
         }
 
         return $this;
     }
 
-    public function removeAllowedTransition(self $allowedTransition): static
+    public function removeOutgoingTransition(OrderWorkflowTransition $outgoingTransition): static
     {
-        $this->allowedTransitions->removeElement($allowedTransition);
+        if ($this->outgoingTransitions->removeElement($outgoingTransition)) {
+            // set the owning side to null (unless already changed)
+            if ($outgoingTransition->getFromPlace() === $this) {
+                $outgoingTransition->setFromPlace(null);
+            }
+        }
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, OrderWorkflowTransition>
+     */
+    public function getIncomingTransitions(): Collection
+    {
+        return $this->incomingTransitions;
+    }
+
+    public function addIncomingTransition(OrderWorkflowTransition $incomingTransition): static
+    {
+        if (!$this->incomingTransitions->contains($incomingTransition)) {
+            $this->incomingTransitions->add($incomingTransition);
+            $incomingTransition->setToPlace($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIncomingTransition(OrderWorkflowTransition $incomingTransition): static
+    {
+        if ($this->incomingTransitions->removeElement($incomingTransition)) {
+            // set the owning side to null (unless already changed)
+            if ($incomingTransition->getToPlace() === $this) {
+                $incomingTransition->setToPlace(null);
+            }
+        }
+
+        return $this;
+    }
+
     public function getConditions(): ?string
     {
         return $this->conditions;

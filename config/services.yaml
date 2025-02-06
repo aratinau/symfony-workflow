@@ -26,7 +26,7 @@ services:
     dynamic_workflow.base_item:
         public: true
         class: Symfony\Component\Workflow\WorkflowInterface
-        factory: ['@App\Workflow\DynamicWorkflowServiceFactory', 'create']
+        factory: ['@App\WorkflowDeprecated\DynamicWorkflowServiceFactory', 'create']
         arguments:
             $target: 'App\Entity\BaseItem'
         tags:

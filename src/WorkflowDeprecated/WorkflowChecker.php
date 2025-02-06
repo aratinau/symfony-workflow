@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Workflow;
+namespace App\WorkflowDeprecated;
 
 use App\Entity\BaseItem;
 use Doctrine\ORM\EntityManagerInterface;

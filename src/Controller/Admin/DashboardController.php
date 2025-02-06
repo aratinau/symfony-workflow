@@ -7,6 +7,7 @@ use App\Entity\Order;
 use App\Entity\OrderWorkflowPlace;
 use App\Entity\OrderWorkflowPlaceData;
 use App\Entity\OrderWorkflowPlaceDataMapping;
+use App\Entity\OrderWorkflowTransition;
 use App\Entity\Workflow;
 use App\Entity\Workflow\Place;
 use App\Entity\Workflow\Transition;
@@ -84,10 +85,11 @@ class DashboardController extends AbstractDashboardController
 
         yield MenuItem::subMenu('Workflow', 'fa-solid fa-project-diagram')
             ->setSubItems([
-                MenuItem::linkToCrud('Workflow', 'fas fa-list', OrderWorkflow::class),
-                MenuItem::linkToCrud('Transitions Place', 'fa-solid fa-location-arrow', OrderWorkflowPlace::class),
-                MenuItem::linkToCrud('Transitions Mapping', 'fa-solid fa-arrows-turn-to-dots', OrderWorkflowPlaceDataMapping::class),
-                MenuItem::linkToCrud('Transitions Data', 'fas fa-list', OrderWorkflowPlaceData::class),
+                MenuItem::linkToCrud('Workflow', 'fas fa-project-diagram', OrderWorkflow::class),
+                MenuItem::linkToCrud('Transitions Place', 'fas fa-map-marker-alt', OrderWorkflowPlace::class),
+                MenuItem::linkToCrud('Transitions Data', 'fas fa-database', OrderWorkflowTransition::class),
+                MenuItem::linkToCrud('Transitions Mapping', 'fas fa-route', OrderWorkflowPlaceDataMapping::class),
+                MenuItem::linkToCrud('Transitions Data', 'fas fa-table', OrderWorkflowPlaceData::class),
             ])
         ;
 

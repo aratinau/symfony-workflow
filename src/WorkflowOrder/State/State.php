@@ -2,25 +2,23 @@
 
 namespace App\WorkflowOrder\State;
 
-use App\Entity\Order;
+use App\Entity\OrderWorkflowPlace;
+use App\WorkflowOrder\WorkflowInterface;
 
 class State
 {
-    private string $name;
-    private array $transitions;
-
-    public function __construct(string $name, array $transitions)
-    {
-        $this->name = $name;
-        $this->transitions = $transitions;
+    public function __construct(
+        private OrderWorkflowPlace $orderWorkflowPlace,
+//        private $transitions
+    ) {
     }
 
-    public function process(Order $order): void
+    public function process(WorkflowInterface $entity): void
     {
-        $order->setState($this->name);
+        $entity->setCurrentState($this->orderWorkflowPlace);
     }
 
-    public function getTransitions(): array
+    public function getTransitions()
     {
         return $this->transitions;
     }

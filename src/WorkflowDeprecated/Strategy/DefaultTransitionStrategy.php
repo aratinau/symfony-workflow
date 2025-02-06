@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Workflow\Strategy;
+namespace App\WorkflowDeprecated\Strategy;
 
-use App\Workflow\Place\WorkflowState;
-use App\Workflow\StateContext;
+use App\WorkflowDeprecated\Place\WorkflowState;
+use App\WorkflowDeprecated\StateContext;
 
 class DefaultTransitionStrategy implements TransitionStrategy {
     public function executeTransition(StateContext $context, WorkflowState $nextState) {

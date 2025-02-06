@@ -22,7 +22,19 @@ class OrderWorkflowPlaceCrudController extends AbstractCrudController
     {
         return [
             TextField::new('name'),
-            AssociationField::new('allowedTransitions', 'Transitions')
+//            AssociationField::new('allowedTransitions', 'Transitions')
+//                ->setFormTypeOptions([
+//                    'by_reference' => false,
+//                    'choice_label' => 'name',
+//                ]),
+
+
+            AssociationField::new('outgoingTransitions', 'outgoingTransitions')
+                ->setFormTypeOptions([
+                    'by_reference' => false,
+                    'choice_label' => 'name',
+                ]),
+            AssociationField::new('incomingTransitions', 'incomingTransitions')
                 ->setFormTypeOptions([
                     'by_reference' => false,
                     'choice_label' => 'name',

@@ -10,10 +10,12 @@
             <tr>
                 <th>Id</th>
                 <th>State</th>
-                <th>workflow</th>
+                <th>Actuel Workflow</th>
+                <th>outgoingTransitions</th>
+                <th>incomingTransitions</th>
 {#                <th>Name</th>#}
-                <th>createdAt</th>
-                <th>updatedAt</th>
+{#                <th>createdAt</th>#}
+{#                <th>updatedAt</th>#}
                 <th>owners</th>
                 <th>categories</th>
                 <th>actions</th>
@@ -21,25 +23,52 @@
         </thead>
         <tbody>
         {% for order in orders %}
-            {% set availableTransitions = get_available_transitions(workflow.id, order.state) %}
+            {% set availableTransitions = get_available_transitions(workflow, order.currentState) %}
             <tr>
                 <td>{{ order.id }}</td>
-                <td>{{ order.state }}</td>
+                <td>{{ order.currentState.name }} - {{ order.currentState.id }}</td>
+                <td>{{ order.currentWorkflow.name }}</td>
                 <td>
-                    {# workflow #}
                     <ul>
-                        {% for transition in availableTransitions %}
-                            <li><a href="{{ path('change_state_workflow', {
+                    {% for o in order.currentState.outgoingTransitions %}
+                        <li>
+                            <a href="{{ path('change_state_workflow', {
+                                entityWorkflow: workflow.id,
+                                id: order.id,
+                                param: o.toPlace.id
+                            })}}">{{ o.toPlace.name }}</a>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                    {% for i in order.currentState.incomingTransitions %}
+                        <li>
+                            <a href="{{ path('change_state_workflow', {
+                                entityWorkflow: workflow.id,
+                                id: order.id,
+                                param: i.fromPlace.id
+                            })}}">{{ i.fromPlace.name }}</a>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                    <ul>
+                        {#
+                        {% for outgoingTransition in availableTransitions.outgoingTransitions %}
+                            <li>
+                                <a href="{{ path('change_state_workflow', {
                                     entityWorkflow: workflow.id,
                                     id: order.id,
-                                    param: transition
-                                })}}">{{ transition }}</a></li>
-                        {% endfor %}
+                                    param: outgoingTransition.toPlace.id
+                                })}}">{{ outgoingTransition.toPlace.name }}</a>
+                            </li>
+                        {% endfor %} #}
                     </ul>
                 </td>
 {#                <td>{{ order.name }}</td>#}
-                <td>{{ order.createdAt|date('d/m/Y H:i:s') }}</td>
-                <td>{{ order.updatedAt|date('d/m/Y H:i:s') }}</td>
+{#                <td>{{ order.createdAt|date('d/m/Y H:i:s') }}</td>#}
+{#                <td>{{ order.updatedAt|date('d/m/Y H:i:s') }}</td>#}
                 <td>
                     {% for owner in order.owners %}
                         {{ owner.fullname }}

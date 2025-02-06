@@ -24,7 +24,7 @@
                     }) }}">go</a></td>
                 <td>
                     <div class="mermaid">
-                        {{ mermaid_generator.generate(order_workflow.states, order_workflow.transitions) | raw }}
+                        {{ mermaid_generator.generate(order_workflow) | raw }}
                     </div>
                 </td>
                 <td>

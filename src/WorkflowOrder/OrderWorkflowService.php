@@ -33,7 +33,7 @@ use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 // TODO : des direction (nouvel etat) en fonction du resultat d'une expression
 
-class OrderWorkflow
+class OrderWorkflowService
 {
 
     public function __construct(
@@ -49,37 +49,50 @@ class OrderWorkflow
 //        }
     }
 
-    public function process(\App\Entity\OrderWorkflow $entityWorkflow, Order $order, string $nextState): void
+    public function applyTransition(\App\Entity\OrderWorkflow $entityWorkflow, WorkflowInterface $entity, OrderWorkflowPlace $nextState): void
     {
-        $currentState = $order->getState();
+        $currentState = $entity->getCurrentState();
+//        $currentStatePlace = $this->OrderWorkflowPlaceRepository->findOneBy(['name' => $nextState]);
 
-        foreach ($this->orderTransition->getAllTransitions($entityWorkflow->getId()) as $name => $transition) {
-            $states[$name] = new State($name, $transition);
+        $states = [];
+        $transitions = $this->orderTransition->getAvailableTransitions($entityWorkflow, $currentState);
+
+        foreach ($transitions as $transition) {
+            $states[$transition->getId()] = new State(
+                $transition,
+//                $transition
+            );
         }
+
+//        foreach ($this->orderTransition->getAllTransitions($entityWorkflow->getId()) as $transition) {
+//            $states[$transition->getName()] = new State(
+//                $transition->getName(),
+//                $transition
+//            );
+//        }
 
         // Vérifier si l'état actuel existe
-        if (!isset($states[$currentState])) {
-            throw new \Exception("État actuel inconnu : $currentState");
-        }
+//        if (!isset($states[$currentState])) {
+            // TODO  throw new \Exception("État actuel inconnu : $currentState");
+//        }
 
         // Vérifier si la transition est valide
-        if (!in_array($nextState, $states[$currentState]->getTransitions())) {
-            throw new \Exception("Transition non autorisée : $currentState -> $nextState");
-        }
+        //if (!in_array($nextState, $states[$currentStatePlace->getId()]->getTransitions())) {
+            // TODO  throw new \Exception("Transition non autorisée : $currentState -> $nextState");
+        //}
 
-        // Récupérer l'état cible
-        $nextStatePlace = $this->OrderWorkflowPlaceRepository->findOneBy(['name' => $nextState]);
-        if (!$nextStatePlace) {
+
+        if (!$nextState) {
             throw new \Exception("État cible inconnu : $nextState");
         }
 
         // Exécuter les actions associées à l'état cible
-        $actions = $nextStatePlace->getActions();
+        $actions = $nextState->getActions();
 
         foreach ($actions as $action) {
             try {
                 $actionInstance = $this->actionFactory->create($action);
-                $actionInstance->execute($order, $nextStatePlace);
+                $actionInstance->execute($entity, $nextState);
             } catch (\Exception $e) {
                 $this->logger->warning($e->getMessage());
             }
@@ -105,25 +118,16 @@ class OrderWorkflow
         }*/
 
         // Mettre à jour l'état de la commande
-        $states[$nextStatePlace->getName()]->process($order);
-        $order->setState($nextState);
+        $states[$nextState->getId()]->process($entity);
+        //$entity->setState($nextState);
 
-        $this->logger->info("Commande mise à jour avec succès : nouvel état '$nextState'");
-    }
-
-    public function getAvailableTransitions($workflow, string $currentState): array
-    {
-        // TODO aller chercher depuis la base de donnée
-        // Utilise OrderTransition pour obtenir les transitions dynamiques
-        $allTransitions = $this->orderTransition->getAllTransitions($workflow);
-
-        return $allTransitions[$currentState] ?? [];
+        //$this->logger->info("Commande mise à jour avec succès : nouvel état '$nextState'");
     }
 
     public function canTransition(
         \App\Entity\OrderWorkflow $workflow,
-        string $currentState,
-        string $newState,
+        OrderWorkflowPlace $currentState,
+        OrderWorkflowPlace $targetPlace,
         array $context = []
     ): bool
     {
@@ -131,17 +135,19 @@ class OrderWorkflow
         $transitions = $this->orderTransition->getAllTransitions($workflow->getId());
 
         // Vérifier si la transition est définie
-        if (!isset($transitions[$currentState]) || !in_array($newState, $transitions[$currentState], true)) {
-            return false;
-        }
+//        if (!isset($transitions[$currentState]) || !in_array($newState, $transitions[$currentState], true)) {
+//            return false;
+//        }
+        $this->OrderWorkflowPlaceRepository->canTransition($workflow, $currentState, $targetPlace);
 
         // Récupérer l'état cible
-        $targetPlace = $this->entityManager
-            ->getRepository(OrderWorkflowPlace::class)
-            ->findOneBy(['name' => $newState, 'workflow' => $workflow]);
+//        $targetPlace = $this->entityManager
+//            ->getRepository(OrderWorkflowPlace::class)
+//            ->findOneBy(['name' => $targetPlace, 'workflow' => $workflow]);
+
 
         if (!$targetPlace) {
-            throw new \Exception("État inconnu : $newState");
+            throw new \Exception("État inconnu : $targetPlace");
         }
 
         // Vérifier les rôles autorisés

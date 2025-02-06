@@ -30,7 +30,7 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
 
         UserFactory::createMany(50);
         BaseItemFactory::createMany(50);
-        OrderFactory::createMany(50);
+//        OrderFactory::createMany(50);
 
         $manager->flush();
     }

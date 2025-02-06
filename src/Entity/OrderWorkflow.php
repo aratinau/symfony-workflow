@@ -75,46 +75,4 @@ class OrderWorkflow
 
         return $this;
     }
-
-    // Note: utiliser pour le rendu en front
-
-    /**
-     * Retourne un tableau associatif des états du workflow.
-     *
-     * @return array<string, string>
-     */
-    public function getStates(): array
-    {
-        $states = [];
-
-        foreach ($this->orderWorkflowPlaces as $place) {
-            // TODO $states[$place->getName()] = $place->getDescription();
-            $states[$place->getName()] = $place->getName();
-        }
-
-        return $states;
-    }
-
-    /**
-     * Retourne un tableau des transitions du workflow.
-     *
-     * @return array<array<string>>
-     */
-    public function getTransitions(): array
-    {
-        $transitions = [];
-
-        foreach ($this->orderWorkflowPlaces as $place) {
-            foreach ($place->getAllowedTransitions() as $nextPlace) {
-                $transitions[] = [
-                    $place->getName(),       // État de départ
-                    $nextPlace->getName(),   // État d'arrivée
-                    // TODO $place->getTransitionName(), // Nom de la transition
-                    'transition name'
-                ];
-            }
-        }
-
-        return $transitions;
-    }
 }

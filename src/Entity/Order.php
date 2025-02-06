@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\WorkflowOrder\WorkflowInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,7 +10,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity]
 #[ORM\Table(name: "order_table")] // order is a reserved keyword in PostgreSQL
-class Order
+class Order implements WorkflowInterface
 {
     use TimestampableEntity;
 
@@ -18,8 +19,8 @@ class Order
     #[ORM\Column(type: "integer")]
     private ?int $id = null;
 
-    #[ORM\Column(type: "string", length: 50)]
-    private string $state; // état workflow
+//    #[ORM\Column(type: "string", length: 50)]
+//    private string $state; // état workflow
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -39,8 +40,14 @@ class Order
     #[ORM\Column(nullable: true)]
     private ?int $amount = null;
 
+//    #[ORM\ManyToOne(inversedBy: 'orders')]
+//    private ?OrderWorkflow $currentWorkflow = null;
+
     #[ORM\ManyToOne(inversedBy: 'orders')]
-    private ?Workflow $currentWorkflow = null;
+    private ?OrderWorkflow $currentWorkflow = null;
+
+    #[ORM\ManyToOne]
+    private ?OrderWorkflowPlace $currentState = null;
 
     public function __construct()
     {
@@ -54,16 +61,16 @@ class Order
         return $this->id;
     }
 
-    public function getState(): string
-    {
-        return $this->state;
-    }
+//    public function getState(): string
+//    {
+//        return $this->state;
+//    }
 
-    public function setState(string $state): void
-    {
-        $this->state = $state;
-    }
-
+//    public function setState(string $state): void
+//    {
+//        $this->state = $state;
+//    }
+//
     public function getName(): ?string
     {
         return $this->name;
@@ -136,14 +143,26 @@ class Order
         return $this;
     }
 
-    public function getCurrentWorkflow(): ?Workflow
+    public function getCurrentWorkflow(): ?OrderWorkflow
     {
         return $this->currentWorkflow;
     }
 
-    public function setCurrentWorkflow(?Workflow $currentWorkflow): static
+    public function setCurrentWorkflow(?OrderWorkflow $currentWorkflow): static
     {
         $this->currentWorkflow = $currentWorkflow;
+
+        return $this;
+    }
+
+    public function getCurrentState(): ?OrderWorkflowPlace
+    {
+        return $this->currentState;
+    }
+
+    public function setCurrentState(?OrderWorkflowPlace $currentState): static
+    {
+        $this->currentState = $currentState;
 
         return $this;
     }
