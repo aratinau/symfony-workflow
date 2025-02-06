@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Category;
 use App\Entity\Order;
+use App\Entity\OrderWorkflowAction;
 use App\Entity\OrderWorkflowPlace;
 use App\Entity\OrderWorkflowPlaceData;
 use App\Entity\OrderWorkflowPlaceDataMapping;
@@ -86,6 +87,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::subMenu('Workflow', 'fa-solid fa-project-diagram')
             ->setSubItems([
                 MenuItem::linkToCrud('Workflow', 'fas fa-project-diagram', OrderWorkflow::class),
+                MenuItem::linkToCrud('Actions', 'fas fa-hexagon-nodes', OrderWorkflowAction::class),
                 MenuItem::linkToCrud('Transitions Place', 'fas fa-map-marker-alt', OrderWorkflowPlace::class),
                 MenuItem::linkToCrud('Transitions Data', 'fas fa-database', OrderWorkflowTransition::class),
                 MenuItem::linkToCrud('Transitions Mapping', 'fas fa-route', OrderWorkflowPlaceDataMapping::class),

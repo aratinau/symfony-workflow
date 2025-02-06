@@ -7,9 +7,9 @@ use App\Entity\WorkflowPlace;
 
 class SendNotificationAction implements ActionInterface
 {
-    public function execute($order, OrderWorkflowPlace $workflowPlace)
+    public function execute($entity, OrderWorkflowPlace $workflowPlace)
     {
-        dd('todo notif');
+        dd('todo notif', $workflowPlace->getActions());
         if (!isset($actions['recipient']) || !isset($actions['message'])) {
             throw new \InvalidArgumentException("Les clés 'recipient' et 'message' sont requises pour l'action 'send_notification'.");
         }

@@ -52,23 +52,6 @@ class OrderTransition
         return $transitions;
     }
 
-    /**
-     * Retourne un tableau associatif des états du workflow.
-     *
-     * @return array<string, string>
-     */
-    public function getStates(OrderWorkflow $workflow): array
-    {
-        $states = [];
-
-        foreach ($workflow->getOrderWorkflowPlaces() as $place) {
-            // TODO $states[$place->getName()] = $place->getDescription();
-            $states[$place->getName()] = $place->getName();
-        }
-
-        return $states;
-    }
-
     public function getAvailableTransitions(OrderWorkflow $workflow, OrderWorkflowPlace $currentState)
     {
         return $this->orderWorkflowPlaceRepository->findBy([

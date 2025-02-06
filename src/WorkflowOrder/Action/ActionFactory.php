@@ -7,6 +7,7 @@ class ActionFactory
     public function __construct(
         private ChangeCategoryAction $changeCategoryAction,
         private SendNotificationAction $sendNotificationAction,
+        private ChangeOwnerAction $changeOwnerAction,
     ) {
     }
 
@@ -17,7 +18,10 @@ class ActionFactory
                 return $this->changeCategoryAction;
             case 'send_notification':
                 return $this->sendNotificationAction;
+            case 'change_owner':
+                return $this->changeOwnerAction;
             default:
+
                 throw new \Exception("Type d'action inconnu : {$actionType}");
         }
     }

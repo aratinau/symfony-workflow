@@ -33,6 +33,9 @@ use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 // TODO : des direction (nouvel etat) en fonction du resultat d'une expression
 
+// TODO [ ] $workflow->canTransition
+// TODO [ ] $workflow->applyTransition
+
 class OrderWorkflowService
 {
 

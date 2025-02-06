@@ -38,16 +38,30 @@ class OrderWorkflowPlace
     private ?array $allowedRoles = [];
 
     #[ORM\Column(type: 'json', nullable: true)]
-    private ?array $actions = [];
+        private ?array $actions = [];
 
     #[ORM\ManyToOne(inversedBy: 'orderWorkflowPlaces')]
     #[ORM\JoinColumn(nullable: false)]
     private ?OrderWorkflow $workflow = null;
 
+    /**
+     * @var Collection<int, OrderWorkflowPlaceDataMapping>
+     */
+    #[ORM\OneToMany(targetEntity: OrderWorkflowPlaceDataMapping::class, mappedBy: 'place')]
+    private Collection $dataMappings;
+
+    /**
+     * @var Collection<int, OrderWorkflowAction>
+     */
+    #[ORM\OneToMany(targetEntity: OrderWorkflowAction::class, mappedBy: 'place')]
+    private Collection $orderWorkflowActions;
+
     public function __construct()
     {
         $this->outgoingTransitions = new ArrayCollection();
         $this->incomingTransitions = new ArrayCollection();
+        $this->dataMappings = new ArrayCollection();
+        $this->orderWorkflowActions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -148,9 +162,15 @@ class OrderWorkflowPlace
         $this->allowedRoles = $allowedRoles;
         return $this;
     }
+
     public function getActions(): ?array
     {
         return $this->actions;
+    }
+
+    public function setActions(?array $actions): void
+    {
+        $this->actions = $actions;
     }
 
     public function getWorkflow(): ?OrderWorkflow
@@ -161,6 +181,66 @@ class OrderWorkflowPlace
     public function setWorkflow(?OrderWorkflow $workflow): static
     {
         $this->workflow = $workflow;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OrderWorkflowPlaceDataMapping>
+     */
+    public function getDataMappings(): Collection
+    {
+        return $this->dataMappings;
+    }
+
+    public function addDataMapping(OrderWorkflowPlaceDataMapping $dataMapping): static
+    {
+        if (!$this->dataMappings->contains($dataMapping)) {
+            $this->dataMappings->add($dataMapping);
+            $dataMapping->setPlace($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDataMapping(OrderWorkflowPlaceDataMapping $dataMapping): static
+    {
+        if ($this->dataMappings->removeElement($dataMapping)) {
+            // set the owning side to null (unless already changed)
+            if ($dataMapping->getPlace() === $this) {
+                $dataMapping->setPlace(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OrderWorkflowAction>
+     */
+    public function getOrderWorkflowActions(): Collection
+    {
+        return $this->orderWorkflowActions;
+    }
+
+    public function addOrderWorkflowAction(OrderWorkflowAction $orderWorkflowAction): static
+    {
+        if (!$this->orderWorkflowActions->contains($orderWorkflowAction)) {
+            $this->orderWorkflowActions->add($orderWorkflowAction);
+            $orderWorkflowAction->setPlace($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderWorkflowAction(OrderWorkflowAction $orderWorkflowAction): static
+    {
+        if ($this->orderWorkflowActions->removeElement($orderWorkflowAction)) {
+            // set the owning side to null (unless already changed)
+            if ($orderWorkflowAction->getPlace() === $this) {
+                $orderWorkflowAction->setPlace(null);
+            }
+        }
 
         return $this;
     }

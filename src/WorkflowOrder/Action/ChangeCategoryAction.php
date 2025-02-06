@@ -15,23 +15,26 @@ class ChangeCategoryAction implements ActionInterface
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function execute($order, OrderWorkflowPlace $workflowPlace)
+    public function execute($entity, OrderWorkflowPlace $workflowPlace)
     {
 //        if (!isset($data['category_name'])) {
 //            throw new \InvalidArgumentException("La clé 'category_name' est requise pour l'action 'change_category'.");
 //        }
 
-        // TODO envoyer la data
-        $c = $workflowPlace->getDatas()->toArray()[0]->getValue();
+        foreach ($workflowPlace->getDataMappings() as $dataMapping) {
+            $category = $this->categoryRepository->findOneBy([
+                $dataMapping->getData()->getKey() => $dataMapping->getData()->getValue()
+            ]);
 
-        //$category = $this->categoryRepository->findOneBy(['name' => $data['category_name']]);
-        $category = $this->categoryRepository->findOneBy(['name'=> $c]);
+            if (!$category) {
+                // throw new \Exception("Catégorie introuvable : {$data['category_name']}");
+            }
 
-        if (!$category) {
-            // throw new \Exception("Catégorie introuvable : {$data['category_name']}");
+            $entity->addCategory($category);
         }
 
-        $order->addCategory($category);
+        //$category = $this->categoryRepository->findOneBy(['name' => $data['category_name']]);
+
 
         // Log (facultatif)
         // $this->logger->info("Catégorie de la commande mise à jour vers {$category->getName()}");
