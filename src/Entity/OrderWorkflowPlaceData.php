@@ -19,6 +19,9 @@ class OrderWorkflowPlaceData
     #[ORM\Column(length: 255)]
     private ?string $value = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $entity = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +47,18 @@ class OrderWorkflowPlaceData
     public function setValue(string $value): static
     {
         $this->value = $value;
+
+        return $this;
+    }
+
+    public function getEntity(): ?string
+    {
+        return $this->entity;
+    }
+
+    public function setEntity(?string $entity): static
+    {
+        $this->entity = $entity;
 
         return $this;
     }

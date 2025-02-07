@@ -59,7 +59,7 @@ class OrderWorkflowPlaceCrudController extends AbstractCrudController
             // Champ pour l'attribut 'actions' (type: json)
             ArrayField::new('actions')
                 ->setFormTypeOptions(['required' => false])
-                ->setLabel('Actions'),
+                ->setLabel('Actions Factory'),
         ];
     }
 }

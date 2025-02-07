@@ -87,11 +87,11 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::subMenu('Workflow', 'fa-solid fa-project-diagram')
             ->setSubItems([
                 MenuItem::linkToCrud('Workflow', 'fas fa-project-diagram', OrderWorkflow::class),
+                MenuItem::linkToCrud('Place', 'fas fa-map-marker-alt', OrderWorkflowPlace::class),
+                MenuItem::linkToCrud('Transitions', 'fas fa-database', OrderWorkflowTransition::class),
+                //MenuItem::linkToCrud('Transitions Mapping', 'fas fa-route', OrderWorkflowPlaceDataMapping::class),
+                MenuItem::linkToCrud('Place Data', 'fas fa-table', OrderWorkflowPlaceData::class),
                 MenuItem::linkToCrud('Actions', 'fas fa-hexagon-nodes', OrderWorkflowAction::class),
-                MenuItem::linkToCrud('Transitions Place', 'fas fa-map-marker-alt', OrderWorkflowPlace::class),
-                MenuItem::linkToCrud('Transitions Data', 'fas fa-database', OrderWorkflowTransition::class),
-                MenuItem::linkToCrud('Transitions Mapping', 'fas fa-route', OrderWorkflowPlaceDataMapping::class),
-                MenuItem::linkToCrud('Transitions Data', 'fas fa-table', OrderWorkflowPlaceData::class),
             ])
         ;
 
